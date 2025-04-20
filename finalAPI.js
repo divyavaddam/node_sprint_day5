@@ -21,8 +21,7 @@ mongoose.connect(dbURL).then(function(connection){
 
 
 
-//const getAllUsers = createFactory(UserModel);
-//const getAllProductsHandler = createFactory(ProductModel);
+
 
 
 
@@ -262,34 +261,8 @@ app.get("/api/product", getAllProductsHandler);
 app.get("/api/product/:productId", getProductByGivenId);
 app.delete("/api/product/:productId", deleteProductById);
 
-// closure in js
-/*
-function createFactory(ElementModel){
-    return async function(request, response){
-    try{
-        console.log("I'm from get method");
-        // response.status(200).json({
-        //    status: "Success",
-        //    message: "Sending message from get method"
-        //}) 
-       const productDataStore = await ElementModel.find();
-       if(productDataStore.length == 0){
-        throw new Error("No Products Found");
-       }
-       response.status(200).json({
-        status: "Success",
-        message: productDataStore
-    })
-        } catch (e) {
-            response.status(404).json({
-                status: "failure",
-                message: e.message
-            })
-            
-        }
-    }
-}
-*/
+
+    
 
 // Helper functions
 app.use(function(request, response) {
@@ -317,6 +290,6 @@ app.listen(PORT, function(){
 });
 
 /*
- at code level -> as we can see we are copy pasting and repiting the same code -> to prevent repetition of code -> We use factory design
+ at code level -> as we can see we are copy pasting and repeting the same code -> to prevent repetition of code -> We use factory design
  at file level ->Having the entire code in one file eg: finalApI.js is a bad way of writing -> we need to follow a structure to segregate the code -> so we use Model View Controller(MVC) Architecture  
 */ 
