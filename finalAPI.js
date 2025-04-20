@@ -121,6 +121,6 @@ app.listen(PORT, function(){
 });
 
 /*
- at code level -> as we can see we are copy pasting and repiting the same code -> to prevent repetition of code -> We use factory design
+ at code level -> as we can see we are copy pasting and repeting the same code -> to prevent repetition of code -> We use factory design
  at file level ->Having the entire code in one file eg: finalApI.js is a bad way of writing -> we need to follow a structure to segregate the code -> so we use Model View Controller(MVC) Architecture  
 */ 
