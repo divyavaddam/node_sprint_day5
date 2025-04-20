@@ -20,7 +20,16 @@ mongoose.connect(dbURL).then(function(connection){
     console.log("Connection Successful");
 }).catch(e => console.log(e))
 
+<<<<<<< HEAD
 /*
+=======
+
+
+
+
+
+
+>>>>>>> 4e12db6210a59d92ba952f8a402148b33c948c97
 const getUserById = function (id) {
     const user = userDataStore.find((user) => {
         return user.id == id;
@@ -94,6 +103,10 @@ app.get("/api/product/:productId", getProductByGivenId);
 app.delete("/api/product/:productId", deleteProductById);
 
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 4e12db6210a59d92ba952f8a402148b33c948c97
 
 // Helper functions
 app.use(function(request, response) {
