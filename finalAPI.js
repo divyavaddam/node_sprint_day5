@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const UserModel = require("./UserModel");
 const ProductModel = require("./ProductModel");
+const {getAllFactory, createFactory, getByIdFactory, deleteByIdFactory} = require("./utility/crudFactory");
 const mongoose = require("mongoose");
 const {PORT, DB_USER, DB_PASSWORD} = process.env;
 const app = express();
@@ -19,13 +20,7 @@ mongoose.connect(dbURL).then(function(connection){
     console.log("Connection Successful");
 }).catch(e => console.log(e))
 
-
-
-//const getAllUsers = createFactory(UserModel);
-//const getAllProductsHandler = createFactory(ProductModel);
-
-
-
+/*
 const getUserById = function (id) {
     const user = userDataStore.find((user) => {
         return user.id == id;
@@ -36,183 +31,19 @@ const getUserById = function (id) {
         return user;
     }
 }
-
-
+    */
 
 // Handler functions for user APIs
-const createUserHandler = async function(request, response) {
-    try{
-      const userDetails = request.body;
-      // adding user to db
-      const user = await UserModel.create(userDetails);
-      response.status(200).json({
-        status: "Success",
-        message: "added user",
-        user: user
-      })
-    }catch(e){
-        response.status(500).json({
-            status: "Failure",
-            message:e.message
-        })
-    }
-    
-    
-    
-    
-    
-}
-const getUserByGivenId = async function(request, response) {
-    try {
-        const userId = request.params.userId;
-        const userDetails = await UserModel.findById(userId)
-        if (userDetails === "No user found"){
-            throw new Error(`User with ${userId} not found`);
-        }else{
-            response.status(200).json({
-                status: "Success",
-                message: userDetails
-            })
-
-        }
-    }catch (e) {
-        response.status(404).json({
-            status: "Failure",
-            message: e.message
-        })
-    }
-    
-    
-}
-
-const getAllUsers = async function(request, response) {
-    try{
-        console.log("I'm from get method");
-        // response.status(200).json({
-        //    status: "Success",
-        //    message: "Sending message from get method"
-        //}) 
-        const userDataStore = await UserModel.find();
-       if(userDataStore.length == 0){
-        throw new Error("No Users Found");
-       }
-       response.status(200).json({
-        status: "Success",
-        message: userDataStore
-    })
-        } catch (e) {
-            response.status(404).json({
-                status: "failure",
-                message: e.message
-            })
-            
-        }
-}
-const deleteById = async function(request, response) {
-    const {userId} = request.params;
-    try {
-        
-        let user = await UserModel.findByIdAndDelete(userId)
-        
-            response.status(200).json({
-                status: "Successful Deletion",
-                message: user
-            })
-
-        
-    }catch (e) {
-        response.status(404).json({
-            status: "Failure",
-            message: `User with userId ${userId} is not found to delete`
-        })
-    }
-}
-
+const createUserHandler = createFactory(UserModel);
+const getUserByGivenId = getByIdFactory(UserModel);
+const getAllUsers = getAllFactory(UserModel);
+const deleteById = deleteByIdFactory(UserModel);
 
 // handler functions for products APIs
-const createProductHandler =  async function(request, response) {
-    try{
-      const productDetails = request.body;
-      // adding product to db
-      const product = await ProductModel.create(productDetails);
-      response.status(200).json({
-        status: "Success",
-        message: "added product",
-        product: product
-      })
-    }catch(e){
-        response.status(500).json({
-            status: "Failure",
-            message:e.message
-        })
-    }
-    
-}
-const getAllProductsHandler = async function(request, response) {
-    try{
-        console.log("I'm from get method");
-        // response.status(200).json({
-        //    status: "Success",
-        //    message: "Sending message from get method"
-        //}) 
-       const productDataStore = await ProductModel.find();
-       if(productDataStore.length == 0){
-        throw new Error("No Products Found");
-       }
-       response.status(200).json({
-        status: "Success",
-        message: productDataStore
-    })
-        } catch (e) {
-            response.status(404).json({
-                status: "failure",
-                message: e.message
-            })
-            
-        }
-}
-const getProductByGivenId = async function(request, response) {
-    try {
-        const productId = request.params.productId;
-        const productDetails = await ProductModel.findById(productId)
-        if (productDetails === "No product found"){
-            throw new Error(`Product with ${productId} not found`);
-        }else{
-            response.status(200).json({
-                status: "Success",
-                message: productDetails
-            })
-
-        }
-    }catch (e) {
-        response.status(404).json({
-            status: "Failure",
-            message: e.message
-        })
-    }
-    
-    
-}
-const deleteProductById = async function(request, response) {
-    const {productId} = request.params;
-    try {
-        
-        let product = await ProductModel.findByIdAndDelete(productId)
-        
-            response.status(200).json({
-                status: "Successful Deletion",
-                message: product
-            })
-
-        
-    }catch (e) {
-        response.status(404).json({
-            status: "Failure",
-            message: `Product with productId ${productId} is not found to delete`
-        })
-    }
-}
-
+const createProductHandler = createFactory(ProductModel);
+const getAllProductsHandler = getAllFactory(ProductModel);
+const getProductByGivenId = getByIdFactory(ProductModel);
+const deleteProductById = deleteByIdFactory(ProductModel);
 
 
 
@@ -262,34 +93,7 @@ app.get("/api/product", getAllProductsHandler);
 app.get("/api/product/:productId", getProductByGivenId);
 app.delete("/api/product/:productId", deleteProductById);
 
-// closure in js
-/*
-function createFactory(ElementModel){
-    return async function(request, response){
-    try{
-        console.log("I'm from get method");
-        // response.status(200).json({
-        //    status: "Success",
-        //    message: "Sending message from get method"
-        //}) 
-       const productDataStore = await ElementModel.find();
-       if(productDataStore.length == 0){
-        throw new Error("No Products Found");
-       }
-       response.status(200).json({
-        status: "Success",
-        message: productDataStore
-    })
-        } catch (e) {
-            response.status(404).json({
-                status: "failure",
-                message: e.message
-            })
-            
-        }
-    }
-}
-*/
+
 
 // Helper functions
 app.use(function(request, response) {
